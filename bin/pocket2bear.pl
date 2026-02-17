@@ -199,12 +199,18 @@ sub main {
             print "Skipping already synced recording: $recording_id\n";
             next;
         }
-        
+       
         print "Fetching details for recording $recording_id...\n";
         my $details = get_recording_details($recording_id);
-        
+
         unless ($details) {
             warn "Failed to fetch details for $recording_id, skipping\n";
+            next;
+        }
+
+        unless ($details->{summarizations}{v2_summary})
+        {
+            print "Skipping recording without summarization: $recording_id";
             next;
         }
         
