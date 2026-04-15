@@ -145,8 +145,13 @@ sub format_summary_content {
     push @parts, "**Date:** $created_at";
     push @parts, "**Duration:** $duration";
     push @parts, "";
-    
-    my $summary = $recording->{summarizations}{v2_summary}{markdown};
+
+
+    my $summarizations_hash = $recording->{summarizations};
+    my @keys = keys %$summarizations_hash;
+
+
+    my $summary = $recording->{summarizations}{$keys[0]}{v2}{summary}{markdown};
     my $summary_text = '';
     
     if (ref($summary) eq 'HASH') {
@@ -208,7 +213,7 @@ sub main {
             next;
         }
 
-        unless ($details->{summarizations}{v2_summary})
+        unless ($details->{summarizations})
         {
             print "Skipping recording without summarization: $recording_id";
             next;
